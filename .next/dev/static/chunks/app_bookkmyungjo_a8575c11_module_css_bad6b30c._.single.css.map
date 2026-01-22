@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/app/bookkmyungjo_a8575c11.module.css"],"sourcesContent":["@font-face {\n    \nfont-family: 'bookkMyungjo';\n    src: url('@vercel/turbopack-next/internal/font/local/font?{%22path%22:%22../public/fonts/BookkMyungjo_Light.ttf%22,%22preload%22:true,%22has_size_adjust%22:true}') format('truetype');\n    font-display: swap;\n    \nfont-weight: 300;\nfont-style: normal;\n}\n@font-face {\n    \nfont-family: 'bookkMyungjo';\n    src: url('@vercel/turbopack-next/internal/font/local/font?{%22path%22:%22../public/fonts/BookkMyungjo_Bold.ttf%22,%22preload%22:true,%22has_size_adjust%22:true}') format('truetype');\n    font-display: swap;\n    \nfont-weight: 700;\nfont-style: normal;\n}\n\n@font-face {\n    font-family: 'bookkMyungjo Fallback';\n    src: local(\"Arial\");\n    ascent-override: 82.78%;\ndescent-override: 20.70%;\nline-gap-override: 0.00%;\nsize-adjust: 96.64%;\n\n}\n\n.className {\n    font-family: 'bookkMyungjo', 'bookkMyungjo Fallback';\n    \n}\n.variable {\n    --font-myungjo: 'bookkMyungjo', 'bookkMyungjo Fallback';\n}\n\n"],"names":[],"mappings":"AAAA;;;;;;;;AASA;;;;;;;;AAUA;;;;;;;;;AAUA;;;;AAIA"}}]
+}

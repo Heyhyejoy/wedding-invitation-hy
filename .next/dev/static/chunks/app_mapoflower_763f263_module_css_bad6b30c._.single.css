@@ -1,0 +1,25 @@
+/* [project]/app/mapoflower_763f263.module.css [app-client] (css) */
+@font-face {
+  font-family: mapoFlower;
+  src: url("../media/MapoFlowerIsland-s.p.c820ab41.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: mapoFlower Fallback;
+  src: local(Arial);
+  ascent-override: 90.21%;
+  descent-override: 31.07%;
+  line-gap-override: 0.0%;
+  size-adjust: 99.77%;
+}
+
+.mapoflower_763f263-module__WQw-cG__className {
+  font-family: mapoFlower, mapoFlower Fallback;
+}
+
+.mapoflower_763f263-module__WQw-cG__variable {
+  --font-script: "mapoFlower", "mapoFlower Fallback";
+}
+
+/*# sourceMappingURL=app_mapoflower_763f263_module_css_bad6b30c._.single.css.map*/

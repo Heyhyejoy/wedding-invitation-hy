@@ -1,0 +1,35 @@
+/* [project]/app/bookkgothic_1469fb23.module.css [app-client] (css) */
+@font-face {
+  font-family: bookkGothic;
+  src: url("../media/BookkGothic_Light-s.p.da00db67.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: bookkGothic;
+  src: url("../media/BookkGothic_Bold-s.p.6b757a57.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: bookkGothic Fallback;
+  src: local(Arial);
+  ascent-override: 78.8%;
+  descent-override: 19.7%;
+  line-gap-override: 0.0%;
+  size-adjust: 101.53%;
+}
+
+.bookkgothic_1469fb23-module__xhwYHW__className {
+  font-family: bookkGothic, bookkGothic Fallback;
+}
+
+.bookkgothic_1469fb23-module__xhwYHW__variable {
+  --font-gothic: "bookkGothic", "bookkGothic Fallback";
+}
+
+/*# sourceMappingURL=app_bookkgothic_1469fb23_module_css_bad6b30c._.single.css.map*/

@@ -3,51 +3,73 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
-
-  /* Wedding palette */
   --bg: #fbfaf8;
-  --ink: #1a1a1a;
-  --muted: rgba(26, 26, 26, 0.55);
-  --line: #e6e1dc;
-  --rose: #c4a1a1; /* 로즈 톤 */
+  --ink: #111;
+  --muted: rgba(0, 0, 0, 0.55);
+  --line: rgba(0, 0, 0, 0.12);
+  --font-main: "MapoFlowerIsland";
 }
 
-/* iPhone Safari 텍스트 자동 확대 방지 */
 html {
   -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--bg);
+  background:
+    radial-gradient(circle at 20% 15%, rgba(0,0,0,0.03), transparent 45%),
+    radial-gradient(circle at 80% 30%, rgba(0,0,0,0.025), transparent 50%),
+    linear-gradient(var(--bg), var(--bg));
   color: var(--ink);
-  font-family: var(--font-body);
+  font-family: var(--font-main);
 }
 
-/* 프리미엄 세리프 */
-.wedding-serif {
-  font-family: var(--font-serif);
+/* =========================
+   TYPOGRAPHY SYSTEM
+   ========================= */
+
+/* 영어 섹션 타이틀 */
+.en-title {
+  font-size: 20px;
+  letter-spacing: 0.08em;
+  text-align: center;
 }
 
-/* 감성 디바이더 */
-.section-divider {
+/* 한글 제목 */
+.ko-title {
+  font-size: 15px;
+  text-align: center;
+  margin-top: 6px;
+}
+
+/* 본문 */
+.body {
+  font-size: 7px;
+  line-height: 2;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* 구분선 */
+.rule {
+  width: 70%;
   height: 1px;
-  background: linear-gradient(to right, transparent, var(--line), transparent);
+  background: var(--line);
+  margin: 24px auto;
 }
 
-/* 스크롤 등장 애니메이션 (IntersectionObserver로 토글) */
-.reveal {
+/* 여백 */
+.section {
+  padding-top: 70px;
+}
+
+/* 페이드인 */
+.fadeBase {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity 700ms ease, transform 700ms ease;
-  will-change: opacity, transform;
-}
-.reveal.in-view {
-  opacity: 1;
-  transform: translateY(0);
 }
 
-/* iOS 탭 하이라이트 제거 */
-* {
-  -webkit-tap-highlight-color: transparent;
+.fadeIn {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.9s ease;
 }

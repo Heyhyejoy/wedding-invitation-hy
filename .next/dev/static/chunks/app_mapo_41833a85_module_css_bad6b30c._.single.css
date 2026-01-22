@@ -1,0 +1,25 @@
+/* [project]/app/mapo_41833a85.module.css [app-client] (css) */
+@font-face {
+  font-family: mapo;
+  src: url("../media/MapoFlowerIsland-s.p.c820ab41.ttf") format("truetype");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: mapo Fallback;
+  src: local(Arial);
+  ascent-override: 90.21%;
+  descent-override: 31.07%;
+  line-gap-override: 0.0%;
+  size-adjust: 99.77%;
+}
+
+.mapo_41833a85-module__CY5uiG__className {
+  font-family: mapo, mapo Fallback;
+}
+
+.mapo_41833a85-module__CY5uiG__variable {
+  --font-main: "mapo", "mapo Fallback";
+}
+
+/*# sourceMappingURL=app_mapo_41833a85_module_css_bad6b30c._.single.css.map*/

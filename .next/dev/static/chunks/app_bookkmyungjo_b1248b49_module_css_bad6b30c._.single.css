@@ -1,0 +1,33 @@
+/* [project]/app/bookkmyungjo_b1248b49.module.css [app-client] (css) */
+@font-face {
+  font-family: bookkMyungjo;
+  src: url("../media/BookkMyungjo_Light-s.p.5ecb4059.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: bookkMyungjo;
+  src: url("../media/BookkMyungjo_Bold-s.p.1b73b38e.ttf") format("truetype");
+  font-display: swap;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: bookkMyungjo Fallback;
+  src: local(Arial);
+  ascent-override: 82.78%;
+  descent-override: 20.7%;
+  line-gap-override: 0.0%;
+  size-adjust: 96.64%;
+}
+
+.bookkmyungjo_b1248b49-module__9N8cgG__className {
+  font-family: bookkMyungjo, bookkMyungjo Fallback;
+}
+
+.bookkmyungjo_b1248b49-module__9N8cgG__variable {
+  --font-myungjo: "bookkMyungjo", "bookkMyungjo Fallback";
+}
+
+/*# sourceMappingURL=app_bookkmyungjo_b1248b49_module_css_bad6b30c._.single.css.map*/
