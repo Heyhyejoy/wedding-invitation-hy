@@ -179,7 +179,7 @@ export default function Page() {
           <div className="relative h-[100svh] min-h-[680px] overflow-hidden">
             {/* 배경 일러스트 */}
             <img
-              src="/pic1.jpg"
+              src="pic1.jpg"
               alt="background illustration"
               className="
         absolute inset-0
@@ -600,10 +600,6 @@ export default function Page() {
                 autoPlay
               />
             </div>
-
-            <p className="mt-5 text-center text-xs text-black/45">
-              사진을 누르면 크게 볼 수 있습니다.
-            </p>
           </section>
         </FadeInSection>
 
