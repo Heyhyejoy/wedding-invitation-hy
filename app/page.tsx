@@ -70,9 +70,41 @@ function buildGoogleMapsLink(address: string) {
   return `https://www.google.com/maps/search/?api=1&query=${q}`;
 }
 
-async function copyToClipboard(text: string) {
-  await navigator.clipboard.writeText(text);
+async function copyToClipboard(text: string): Promise<boolean> {
+  // 1) Modern Clipboard API
+  try {
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {
+    // fallback below
+  }
+
+  // 2) Fallback: execCommand("copy")
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+
+    // 화면 튐 방지
+    ta.style.position = "fixed";
+    ta.style.top = "-9999px";
+    ta.style.left = "-9999px";
+    ta.style.opacity = "0";
+
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+
+    const ok = document.execCommand("copy");
+    document.body.removeChild(ta);
+
+    return ok;
+  } catch {
+    return false;
+  }
 }
+
 
 export default function Page() {
   // share
@@ -156,8 +188,9 @@ END:VCALENDAR
         // ignore cancel
       }
     }
-    await copyToClipboard(url);
-    showToast("링크가 복사됐어요");
+    const ok = await copyToClipboard(url);
+    showToast(ok ? "링크가 복사됐어요" : "복사에 실패했어요. 주소창에서 길게 눌러 직접 복사해 주세요.");
+
   }
 
   // countdown
@@ -738,8 +771,9 @@ function ETransferRow({
       <button
         className="text-xs px-3 py-2 rounded-full border border-black/10 hover:border-black/20 active:scale-[0.99]"
         onClick={async () => {
-          await copyToClipboard(email);
-          onCopied("이메일이 복사됐어요");
+          const ok = await copyToClipboard(email);
+          onCopied(ok ? "이메일이 복사됐어요" : "복사에 실패했어요. 이메일을 길게 눌러 직접 복사해 주세요.");
+
         }}
       >
         복사
