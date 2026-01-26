@@ -91,7 +91,7 @@ export default function Page() {
       if (!audioRef.current) return;
 
       audioRef.current.volume = 0.4;
-      audioRef.current.play().catch(() => {});
+      audioRef.current.play().catch(() => { });
       setBgmOn(true);
 
       window.removeEventListener("touchstart", handleFirstInteraction);
@@ -167,7 +167,7 @@ export default function Page() {
                   audioRef.current.pause();
                   setBgmOn(false);
                 } else {
-                  audioRef.current.play().catch(() => {});
+                  audioRef.current.play().catch(() => { });
                   setBgmOn(true);
                 }
               }}
@@ -546,10 +546,14 @@ export default function Page() {
         </FadeInSection>
 
         {/* THANK YOU */}
-        <FadeInSection>
-          <section className="px-7 pt-22 pb-24 text-center">
-            <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">THANK YOU</div>
-            <h2 className="mt-4 font-script text-[26px] tracking-wide">감사 인사</h2>
+        <FadeInSection variant="scale">
+          <section className="px-7 pt-24 pb-24 text-center">
+            <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">
+              THANK YOU
+            </div>
+            <h2 className="mt-4 font-script text-[26px] tracking-wide">
+              감사 인사
+            </h2>
 
             <div className="section-divider my-10" />
 
@@ -562,11 +566,13 @@ export default function Page() {
               ))}
             </p>
 
-            <div className="mt-12 font-script text-[18px] text-[var(--rose)]">
-              {INVITE.groom.en} & {INVITE.bride.en}
+            <div className="mt-10 font-script text-[18px] text-[var(--rose)]">
+              감사합니다. ♥︎
             </div>
           </section>
         </FadeInSection>
+
+
       </div>
 
       {/* Image Modal */}
@@ -663,7 +669,13 @@ function ETransferRow({
   );
 }
 
-function FadeInSection({ children }: { children: React.ReactNode }) {
+function FadeInSection({
+  children,
+  variant = "up",
+}: {
+  children: React.ReactNode;
+  variant?: "up" | "scale";
+}) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
 
@@ -685,14 +697,24 @@ function FadeInSection({ children }: { children: React.ReactNode }) {
     return () => observer.disconnect();
   }, []);
 
+  const hiddenClass =
+    variant === "scale"
+      ? "opacity-0 scale-[0.97]"
+      : "opacity-0 translate-y-3";
+
+  const shownClass =
+    variant === "scale"
+      ? "opacity-100 scale-100"
+      : "opacity-100 translate-y-0";
+
   return (
     <div
       ref={ref}
-      className={`transition-all duration-[900ms] ease-out ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
-      }`}
+      className={`transition-all duration-[950ms] ease-out ${visible ? shownClass : hiddenClass
+        }`}
     >
       {children}
     </div>
   );
 }
+
