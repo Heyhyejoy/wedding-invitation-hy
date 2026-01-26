@@ -37,18 +37,15 @@ const INVITE = {
     "그 귀한 마음으로 하나님 안에서",
     "하나 된 가정을 이루기 위해 노력하겠습니다. ♥︎",
   ],
+
   etransfer: {
     groom: "hyuknk@gmail.com",
     bride: "hi99yeseul@gmail.com",
   },
 
-  // public 폴더에 넣은 사진 파일명과 맞추기
   photos: ["photo1.jpg", "photo2.jpg", "photo3.jpg"],
-
-  // 약도 이미지
   mapImage: "map.jpg",
 };
-
 
 const WEDDING_ISO = "2026-02-19T19:00:00-05:00";
 
@@ -93,8 +90,8 @@ export default function Page() {
     const handleFirstInteraction = () => {
       if (!audioRef.current) return;
 
-      audioRef.current.volume = 0.4; // 원하는 볼륨 (0~1)
-      audioRef.current.play().catch(() => { });
+      audioRef.current.volume = 0.4;
+      audioRef.current.play().catch(() => {});
       setBgmOn(true);
 
       window.removeEventListener("touchstart", handleFirstInteraction);
@@ -110,9 +107,8 @@ export default function Page() {
     };
   }, []);
 
-
+  // toast
   const [toast, setToast] = useState<string | null>(null);
-
   function showToast(msg: string) {
     setToast(msg);
     window.setTimeout(() => setToast(null), 1200);
@@ -130,7 +126,6 @@ export default function Page() {
     }
     await copyToClipboard(url);
     showToast("링크가 복사됐어요");
-
   }
 
   // countdown
@@ -145,6 +140,15 @@ export default function Page() {
   // gallery modal
   const [openImg, setOpenImg] = useState<string | null>(null);
 
+  // HERO parallax
+  const [scrollY, setScrollY] = useState(0);
+  useEffect(() => {
+    const onScroll = () => setScrollY(window.scrollY || 0);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <main className="min-h-screen bg-[var(--bg)] text-[var(--ink)]">
       {/* Top bar */}
@@ -153,48 +157,52 @@ export default function Page() {
           <div className="font-script text-[10px] tracking-[0.3em] text-[var(--muted)]">
             WEDDING INVITATION
           </div>
-          <button
-            className="text-[11px] px-3 py-2 rounded-full border border-black/10 bg-white/60"
-            onClick={() => {
-              if (!audioRef.current) return;
 
-              if (bgmOn) {
-                audioRef.current.pause();
-                setBgmOn(false);
-              } else {
-                audioRef.current.play().catch(() => { });
-                setBgmOn(true);
-              }
-            }}
-          >
-            {bgmOn ? "BGM ON" : "BGM OFF"}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              className="text-[11px] px-3 py-2 rounded-full border border-black/10 bg-white/60"
+              onClick={() => {
+                if (!audioRef.current) return;
+                if (bgmOn) {
+                  audioRef.current.pause();
+                  setBgmOn(false);
+                } else {
+                  audioRef.current.play().catch(() => {});
+                  setBgmOn(true);
+                }
+              }}
+            >
+              {bgmOn ? "BGM ON" : "BGM OFF"}
+            </button>
 
+            <button
+              className="text-[11px] px-3 py-2 rounded-full border border-black/10 bg-white/60"
+              onClick={onShare}
+              aria-label="share"
+            >
+              공유
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Content */}
       <div className="mx-auto max-w-md">
+        {/* HERO */}
         <section className="relative">
           <div className="relative h-[100svh] min-h-[680px] overflow-hidden">
-            {/* 배경 일러스트 */}
             <img
               src="pic1.jpg"
               alt="background illustration"
-              className="
-        absolute inset-0
-        w-full h-full
-        object-contain
-        opacity-30
-        pointer-events-none
-      "
+              className="absolute inset-0 w-full h-full object-contain opacity-30 pointer-events-none"
+              style={{
+                transform: `translateY(${Math.min(scrollY * 0.12, 60)}px)`,
+                transition: "transform 60ms linear",
+              }}
             />
 
-            {/* 살짝 톤 정리용 오버레이 */}
-            <div className="absolute inset-0 bg-[var(--bg)]/10 opacity-40
-" />
+            <div className="absolute inset-0 bg-[var(--bg)]/10 opacity-40" />
 
-            {/* 텍스트 레이어 */}
             <div className="relative z-10 h-full flex flex-col items-center justify-center px-7 text-center">
               <div className="font-script text-[10px] tracking-[0.35em] text-[var(--muted)]">
                 WEDDING INVITATION
@@ -215,14 +223,14 @@ export default function Page() {
               <p className="text-sm">{INVITE.datetimeText}</p>
               <p className="mt-1 text-sm">{INVITE.venueName}</p>
 
+              <p className="mt-12 text-xs text-black/45">아래로 스크롤해 주세요 ↓</p>
             </div>
           </div>
         </section>
 
-        <div className="mt-10 bg-white">
-
-        </div>
-        <Ornament />
+        <FadeInSection>
+          <Ornament />
+        </FadeInSection>
 
         {/* GREETING */}
         <FadeInSection>
@@ -230,9 +238,7 @@ export default function Page() {
             <div className="font-script tracking-[0.35em] text-[var(--rose)]">
               GREETING
             </div>
-            <h2 className="mt-4 font-script text-[26px] tracking-wide">
-              인사말
-            </h2>
+            <h2 className="mt-4 font-script text-[26px] tracking-wide">인사말</h2>
 
             <div className="section-divider my-10" />
 
@@ -247,45 +253,34 @@ export default function Page() {
           </section>
         </FadeInSection>
 
-        <div className="mt-10 bg-white">
-
-        </div>
-        <Ornament />
+        <FadeInSection>
+          <Ornament />
+        </FadeInSection>
 
         {/* NAMES */}
-        {/* NAMES (between Greeting and Save the Date) */}
         <FadeInSection>
           <section className="px-7 py-16">
             <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-6">
-              {/* Groom block */}
               <div className="text-center">
                 <div className="font-script text-[12px] text-black/50">신랑</div>
-
                 <div className="mt-6 font-script text-[22px] text-black/80 leading-tight">
                   {INVITE.groom.ko}
                 </div>
-
                 <div className="mt-3 font-script text-[13px] text-black/45">
                   ({INVITE.groom.en})
                 </div>
               </div>
 
-              {/* and (center) */}
               <div className="text-center">
-                <div className="h-[22px]" /> {/* 라벨 높이 맞추기 */}
-                <div className="mt-10 font-script text-[18px] text-black/65">
-                  and
-                </div>
+                <div className="h-[22px]" />
+                <div className="mt-10 font-script text-[18px] text-black/65">and</div>
               </div>
 
-              {/* Bride block */}
               <div className="text-center">
                 <div className="font-script text-[12px] text-black/50">신부</div>
-
                 <div className="mt-6 font-script text-[22px] text-black/80 leading-tight">
                   {INVITE.bride.ko}
                 </div>
-
                 <div className="mt-3 font-script text-[13px] text-black/45">
                   ({INVITE.bride.en})
                 </div>
@@ -294,11 +289,9 @@ export default function Page() {
           </section>
         </FadeInSection>
 
-
-        <div className="mt-10 bg-white">
-
-        </div>
-        <Ornament />
+        <FadeInSection>
+          <Ornament />
+        </FadeInSection>
 
         {/* SAVE THE DATE + COUNTDOWN */}
         <FadeInSection>
@@ -307,18 +300,12 @@ export default function Page() {
               SAVE THE DATE
             </h2>
 
-            <div className="mt-5 font-script text-[40px] tracking-widest">
-              2026.02.19
-            </div>
-            <div className="mt-2 font-script text-sm text-black/55">
-              목요일 오후 7시 (EST)
-            </div>
-            {/* Calendar */}
+            <div className="mt-5 font-script text-[40px] tracking-widest">2026.02.19</div>
+            <div className="mt-2 font-script text-sm text-black/55">목요일 오후 7시 (EST)</div>
+
             <div className="mt-10 flex justify-center">
               <div className="rounded-3xl border border-black/10 bg-white px-5 py-6">
-                <div className="text-center font-script text-[16px] mb-4">
-                  2026.02
-                </div>
+                <div className="text-center font-script text-[16px] mb-4">2026.02</div>
 
                 <div className="grid grid-cols-7 gap-2 text-center text-xs text-black/45">
                   {["S", "M", "T", "W", "T", "F", "S"].map((d) => (
@@ -331,25 +318,20 @@ export default function Page() {
                     1, 2, 3, 4, 5, 6, 7,
                     8, 9, 10, 11, 12, 13, 14,
                     15, 16, 17, 18, 19, 20, 21,
-                    22, 23, 24, 25, 26, 27, 28
-                  ].map((day, i) =>
-                    day ? (
-                      <div
-                        key={i}
-                        className="w-9 h-9 flex items-center justify-center rounded-full text-sm"
-                        style={{
-                          background: day === 19 ? "#Caa3a3" : "transparent",
-                          color: day === 19 ? "#ffffff" : "rgba(0,0,0,0.7)",
-                          fontWeight: day === 19 ? 700 : 400,
-                        }}
-                      >
-                        {day}
-                      </div>
-
-                    ) : (
-                      <div key={i} />
-                    )
-                  )}
+                    22, 23, 24, 25, 26, 27, 28,
+                  ].map((day) => (
+                    <div
+                      key={day}
+                      className="w-9 h-9 flex items-center justify-center rounded-full text-sm"
+                      style={{
+                        background: day === 19 ? "#Caa3a3" : "transparent",
+                        color: day === 19 ? "#ffffff" : "rgba(0,0,0,0.7)",
+                        fontWeight: day === 19 ? 700 : 400,
+                      }}
+                    >
+                      {day}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -381,22 +363,19 @@ export default function Page() {
             </div>
           </section>
         </FadeInSection>
-        <div className="mt-10 bg-white">
 
-        </div>
-        <Ornament />
+        <FadeInSection>
+          <Ornament />
+        </FadeInSection>
 
         {/* WEDDING INFO */}
         <FadeInSection>
           <section className="px-7 py-22">
             <div className="text-center">
-
               <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">
                 WEDDING
               </div>
-              <h2 className="mt-4 font-script text-[26px] tracking-wide">
-                예식 안내
-              </h2>
+              <h2 className="mt-4 font-script text-[26px] tracking-wide">예식 안내</h2>
             </div>
 
             <div className="mt-12 space-y-7 text-[16px] leading-9 text-black/80">
@@ -413,45 +392,40 @@ export default function Page() {
                   {INVITE.address}
                 </div>
               </div>
-
-
             </div>
           </section>
         </FadeInSection>
-        <div className="mt-10 bg-white">
 
-        </div>
-        <Ornament />
+        <FadeInSection>
+          <Ornament />
+        </FadeInSection>
+
+        {/* MAP */}
         <FadeInSection>
           <section className="px-7 pb-22">
             <div className="text-center">
               <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">
                 MAP
               </div>
-              <h2 className="mt-4 font-script text-[26px] tracking-wide">
-                오시는 길
-              </h2>
-              <p className="mt-3 text-sm text-black/55">
-                약도 이미지를 참고해 주세요.
-              </p>
+              <h2 className="mt-4 font-script text-[26px] tracking-wide">오시는 길</h2>
+              <p className="mt-3 text-sm text-black/55">약도 이미지를 참고해 주세요.</p>
             </div>
 
             <div className="mt-10 rounded-3xl overflow-hidden border border-black/10 bg-white">
               <img src={INVITE.mapImage} alt="map" className="w-full h-auto" />
             </div>
-            <div className="mt-10 bg-white">
 
+            <div className="mt-10">
+              <PrimaryButton onClick={() => window.open(buildGoogleMapsLink(INVITE.address), "_blank")}>
+                Google Map 열기
+              </PrimaryButton>
             </div>
-            <PrimaryButton onClick={() => window.open(buildGoogleMapsLink(INVITE.address), "_blank")}>
-              Google Map 열기
-            </PrimaryButton>
           </section>
         </FadeInSection>
 
-        <div className="mt-10 bg-white">
-
-        </div>
-        <Ornament />
+        <FadeInSection>
+          <Ornament />
+        </FadeInSection>
 
         {/* TRANSPORTATION */}
         <FadeInSection>
@@ -460,9 +434,7 @@ export default function Page() {
               <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">
                 TRANSPORTATION
               </div>
-              <h2 className="mt-4 font-script text-center text-[26px] tracking-wide">
-                교통 안내
-              </h2>
+              <h2 className="mt-4 font-script text-center text-[26px] tracking-wide">교통 안내</h2>
             </div>
 
             <p className="mt-12 text-[16px] text-center leading-9 text-black/80">
@@ -475,10 +447,10 @@ export default function Page() {
             </p>
           </section>
         </FadeInSection>
-        <div className="mt-10 bg-white">
 
-        </div>
-        <Ornament />
+        <FadeInSection>
+          <Ornament />
+        </FadeInSection>
 
         {/* ACCOUNT */}
         <FadeInSection>
@@ -487,45 +459,26 @@ export default function Page() {
               <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">
                 ACCOUNT
               </div>
-              <h2 className="mt-4 font-script text-[26px] tracking-wide">
-                마음 전하실 곳
-              </h2>
-              <p className="mt-3 text-sm text-black/55">
-                E-transfer 이메일을 복사할 수 있어요.
-              </p>
+              <h2 className="mt-4 font-script text-[26px] tracking-wide">마음 전하실 곳</h2>
+              <p className="mt-3 text-sm text-black/55">E-transfer 이메일을 복사할 수 있어요.</p>
             </div>
 
             <div className="mt-12 space-y-5">
-              <ETransferRow
-                title="신랑측"
-                email={INVITE.etransfer.groom}
-                onCopied={showToast}
-              />
-              <ETransferRow
-                title="신부측"
-                email={INVITE.etransfer.bride}
-                onCopied={showToast}
-              />
-
+              <ETransferRow title="신랑측" email={INVITE.etransfer.groom} onCopied={showToast} />
+              <ETransferRow title="신부측" email={INVITE.etransfer.bride} onCopied={showToast} />
             </div>
-
-
           </section>
         </FadeInSection>
-        <div className="mt-10 bg-white">
 
-        </div>
-        <Ornament />
+        <FadeInSection>
+          <Ornament />
+        </FadeInSection>
 
         {/* RSVP */}
         <FadeInSection>
           <section className="px-7 py-22 text-center">
-            <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">
-              RSVP
-            </div>
-            <h2 className="mt-4 font-script text-[26px] tracking-wide">
-              참석 여부
-            </h2>
+            <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">RSVP</div>
+            <h2 className="mt-4 font-script text-[26px] tracking-wide">참석 여부</h2>
 
             <div className="section-divider my-10" />
 
@@ -534,20 +487,16 @@ export default function Page() {
             </p>
           </section>
         </FadeInSection>
-        <div className="mt-10 bg-white">
 
-        </div>
-        <Ornament />
+        <FadeInSection>
+          <Ornament />
+        </FadeInSection>
 
         {/* MEAL */}
         <FadeInSection>
           <section className="px-7 py-22 text-center">
-            <div className="font-script tracking-[0.35em] text-[var(--rose)]">
-              MEAL
-            </div>
-            <h2 className="mt-4 font-script text-[26px] tracking-wide">
-              식사 안내
-            </h2>
+            <div className="font-script tracking-[0.35em] text-[var(--rose)]">MEAL</div>
+            <h2 className="mt-4 font-script text-[26px] tracking-wide">식사 안내</h2>
 
             <div className="section-divider my-10" />
 
@@ -563,72 +512,59 @@ export default function Page() {
         </FadeInSection>
 
         <FadeInSection>
+          <Ornament />
+        </FadeInSection>
+
+        {/* GALLERY */}
+        <FadeInSection>
           <section className="px-7 py-20">
             <div className="text-center">
-              <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">
-                <Ornament />
-                GALLERY
-              </div>
-              <h2 className="mt-4 font-script text-[26px] tracking-wide">
-                우리의 순간
-              </h2>
+              <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">GALLERY</div>
+              <h2 className="mt-4 font-script text-[26px] tracking-wide">우리의 순간</h2>
             </div>
 
-            {/* photos 1–4 */}
             <div className="mt-10 grid grid-cols-2 gap-3">
-              {["photo1.jpg", "photo2.jpg", "photo3.jpg", "photo4.jpg"].map(
-                (src) => (
-                  <button
-                    key={src}
-                    className="rounded-2xl overflow-hidden border border-black/10 bg-white active:scale-[0.99]"
-                    onClick={() => setOpenImg(src)}
-                  >
-                    <img src={src} alt="photo" className="w-full h-44 object-cover" />
-                  </button>
-                )
-              )}
+              {["photo1.jpg", "photo2.jpg", "photo3.jpg", "photo4.jpg"].map((src) => (
+                <button
+                  key={src}
+                  className="rounded-2xl overflow-hidden border border-black/10 bg-white active:scale-[0.99]"
+                  onClick={() => setOpenImg(src)}
+                >
+                  <img src={src} alt="photo" className="w-full h-44 object-cover" />
+                </button>
+              ))}
             </div>
 
-            {/* vid1 (작게, 서브) */}
             <div className="mt-6 flex justify-center">
-              <video
-                src="vid1.mov"
-                className="w-32 rounded-xl border border-black/10"
-                muted
-                loop
-                playsInline
-                autoPlay
-              />
+              <video src="vid1.mov" className="w-32 rounded-xl border border-black/10" muted loop playsInline autoPlay />
             </div>
           </section>
         </FadeInSection>
 
-        <Ornament />
+        <FadeInSection>
+          <Ornament />
+        </FadeInSection>
 
         {/* THANK YOU */}
         <FadeInSection>
           <section className="px-7 pt-22 pb-24 text-center">
-            <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">
-              THANK YOU
-            </div>
-            <h2 className="mt-4 font-script text-[26px] tracking-wide">
-              감사 인사
-            </h2>
+            <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">THANK YOU</div>
+            <h2 className="mt-4 font-script text-[26px] tracking-wide">감사 인사</h2>
 
             <div className="section-divider my-10" />
 
-            <p className="font-script text-[15px] leading-[1.9] text-gray-700">{INVITE.thanksText.map((line) => (
-              <span key={line}>
-                {line}
-                <br />
-              </span>
-            ))}
+            <p className="font-script text-[15px] leading-[1.9] text-gray-700">
+              {INVITE.thanksText.map((line) => (
+                <span key={line}>
+                  {line}
+                  <br />
+                </span>
+              ))}
             </p>
 
             <div className="mt-12 font-script text-[18px] text-[var(--rose)]">
               {INVITE.groom.en} & {INVITE.bride.en}
             </div>
-
           </section>
         </FadeInSection>
       </div>
@@ -642,16 +578,15 @@ export default function Page() {
           <div className="w-full max-w-md" onClick={(e) => e.stopPropagation()}>
             <img src={openImg} alt="full" className="w-full h-auto rounded-2xl" />
             <div className="mt-3 text-center">
-              <button
-                className="text-sm px-4 py-2 rounded-full border border-white/20 text-white"
-                onClick={() => setOpenImg(null)}
-              >
+              <button className="text-sm px-4 py-2 rounded-full border border-white/20 text-white" onClick={() => setOpenImg(null)}>
                 닫기
               </button>
             </div>
           </div>
         </div>
       )}
+
+      {/* Toast */}
       {toast && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60]">
           <div className="px-4 py-2 rounded-full bg-black/80 text-white text-xs shadow-lg">
@@ -659,13 +594,9 @@ export default function Page() {
           </div>
         </div>
       )}
-      <audio
-        ref={audioRef}
-        src="bgm.mp3"
-        loop
-        playsInline
-      />
 
+      {/* Audio */}
+      <audio ref={audioRef} src="bgm.mp3" loop playsInline />
     </main>
   );
 }
@@ -696,13 +627,8 @@ function PrimaryButton({ onClick, children }: { onClick: () => void; children: R
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-2xl border border-black/10 bg-white p-4">
-      <div className="font-script text-[11px] tracking-[0.25em] text-black/40">
-        {label}
-      </div>
-      <div
-        className="mt-2 font-script text-[28px] leading-none"
-        style={{ fontVariantNumeric: "tabular-nums" }}
-      >
+      <div className="font-script text-[11px] tracking-[0.25em] text-black/40">{label}</div>
+      <div className="mt-2 font-script text-[28px] leading-none" style={{ fontVariantNumeric: "tabular-nums" }}>
         {value}
       </div>
     </div>
@@ -737,7 +663,6 @@ function ETransferRow({
   );
 }
 
-
 function FadeInSection({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
@@ -763,8 +688,9 @@ function FadeInSection({ children }: { children: React.ReactNode }) {
   return (
     <div
       ref={ref}
-      className={`transition-all duration-[750ms] ease-out ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-        }`}
+      className={`transition-all duration-[900ms] ease-out ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+      }`}
     >
       {children}
     </div>
