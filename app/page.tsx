@@ -17,8 +17,11 @@ const INVITE = {
     "기쁜 날을 함께 나누고자 합니다.",
   ],
 
-  trafficText:
-    "교회의 주차자리가 협소하여 자리가 부족할 수 있어 양해부탁드립니다. 또 교회 외에도 교회 앞 샤퍼스 주차장 사용 가능합니다.",
+  trafficText: [
+    "교회의 주차자리가 협소하여 자리가",
+    "부족할 수 있어 양해부탁드립니다.",
+    "또 교회 외에도 교회 앞 샤퍼스 주차장 사용 가능합니다.",
+  ],
 
   mealLines: [
     "하나님의 은혜 안에서 드리는 예식 후,",
@@ -27,9 +30,12 @@ const INVITE = {
     "부디 함께하시어 축복해 주시기 바랍니다",
   ],
 
-  thanksText:
-    "마음으로 축복해주시고 또 걸음으로 함께 해주신 분들 모두 저희의 결혼을 함께 응원해주셔서 감사합니다. 그 귀한 마음으로 하나님 안에서 하나 된 가정을 이루기 위해 노력하겠습니다",
-
+  thanksText: [
+    "마음으로 축복해주시고 또 걸음으로 함께 해주신 분들, ",
+    "모두 저희의 결혼을 함께 응원해주셔서 감사합니다.",
+    "그 귀한 마음으로 하나님 안에서",
+    "하나 된 가정을 이루기 위해 노력하겠습니다. ♥︎",
+  ],
   etransfer: {
     groom: "hyuknk@gmail.com",
     bride: "hi99yeseul@gmail.com",
@@ -78,6 +84,32 @@ export default function Page() {
     return { title, text };
   }, []);
 
+  // bgm
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [bgmOn, setBgmOn] = useState(false);
+
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      if (!audioRef.current) return;
+
+      audioRef.current.volume = 0.4; // 원하는 볼륨 (0~1)
+      audioRef.current.play().catch(() => { });
+      setBgmOn(true);
+
+      window.removeEventListener("touchstart", handleFirstInteraction);
+      window.removeEventListener("click", handleFirstInteraction);
+    };
+
+    window.addEventListener("touchstart", handleFirstInteraction, { once: true });
+    window.addEventListener("click", handleFirstInteraction, { once: true });
+
+    return () => {
+      window.removeEventListener("touchstart", handleFirstInteraction);
+      window.removeEventListener("click", handleFirstInteraction);
+    };
+  }, []);
+
+
   const [toast, setToast] = useState<string | null>(null);
 
   function showToast(msg: string) {
@@ -121,12 +153,22 @@ export default function Page() {
             WEDDING INVITATION
           </div>
           <button
-            className="text-[12px] px-4 py-2 rounded-full border border-black/10 bg-white/60 hover:border-black/20 active:scale-[0.99]"
-            onClick={onShare}
-            aria-label="share"
+            className="text-[11px] px-3 py-2 rounded-full border border-black/10 bg-white/60"
+            onClick={() => {
+              if (!audioRef.current) return;
+
+              if (bgmOn) {
+                audioRef.current.pause();
+                setBgmOn(false);
+              } else {
+                audioRef.current.play().catch(() => { });
+                setBgmOn(true);
+              }
+            }}
           >
-            공유
+            {bgmOn ? "BGM ON" : "BGM OFF"}
           </button>
+
         </div>
       </div>
 
@@ -204,6 +246,53 @@ export default function Page() {
           </section>
         </FadeInSection>
 
+        <div className="mt-10 bg-white">
+
+        </div>
+        <Ornament />
+
+        {/* NAMES */}
+        {/* NAMES (between Greeting and Save the Date) */}
+        <FadeInSection>
+          <section className="px-7 py-16">
+            <div className="grid grid-cols-[1fr_auto_1fr] items-start gap-6">
+              {/* Groom block */}
+              <div className="text-center">
+                <div className="font-script text-[12px] text-black/50">신랑</div>
+
+                <div className="mt-6 font-script text-[22px] text-black/80 leading-tight">
+                  {INVITE.groom.ko}
+                </div>
+
+                <div className="mt-3 font-script text-[13px] text-black/45">
+                  ({INVITE.groom.en})
+                </div>
+              </div>
+
+              {/* and (center) */}
+              <div className="text-center">
+                <div className="h-[22px]" /> {/* 라벨 높이 맞추기 */}
+                <div className="mt-10 font-script text-[18px] text-black/65">
+                  and
+                </div>
+              </div>
+
+              {/* Bride block */}
+              <div className="text-center">
+                <div className="font-script text-[12px] text-black/50">신부</div>
+
+                <div className="mt-6 font-script text-[22px] text-black/80 leading-tight">
+                  {INVITE.bride.ko}
+                </div>
+
+                <div className="mt-3 font-script text-[13px] text-black/45">
+                  ({INVITE.bride.en})
+                </div>
+              </div>
+            </div>
+          </section>
+        </FadeInSection>
+
 
         <div className="mt-10 bg-white">
 
@@ -221,7 +310,7 @@ export default function Page() {
               2026.02.19
             </div>
             <div className="mt-2 font-script text-sm text-black/55">
-              목요일 오후 7시 (Toronto)
+              목요일 오후 7시 (EST)
             </div>
             {/* Calendar */}
             <div className="mt-10 flex justify-center">
@@ -238,7 +327,6 @@ export default function Page() {
 
                 <div className="mt-3 grid grid-cols-7 gap-2 text-center">
                   {[
-                    null, null, null, null, null, null,
                     1, 2, 3, 4, 5, 6, 7,
                     8, 9, 10, 11, 12, 13, 14,
                     15, 16, 17, 18, 19, 20, 21,
@@ -371,13 +459,18 @@ export default function Page() {
               <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">
                 TRANSPORTATION
               </div>
-              <h2 className="mt-4 font-script text-[26px] tracking-wide">
+              <h2 className="mt-4 font-script text-center text-[26px] tracking-wide">
                 교통 안내
               </h2>
             </div>
 
-            <p className="mt-12 text-[16px] leading-9 text-black/80">
-              {INVITE.trafficText}
+            <p className="mt-12 text-[16px] text-center leading-9 text-black/80">
+              {INVITE.trafficText.map((line) => (
+                <span key={line}>
+                  {line}
+                  <br />
+                </span>
+              ))}
             </p>
           </section>
         </FadeInSection>
@@ -436,7 +529,7 @@ export default function Page() {
             <div className="section-divider my-10" />
 
             <p className="font-script leading-9 text-black/80">
-              문자나 개인적으로 먼저 연락 주시면 감사하겠습니다
+              문자나 개인적으로 먼저 연락 주시면 감사하겠습니다.
             </p>
           </section>
         </FadeInSection>
@@ -527,7 +620,13 @@ export default function Page() {
 
             <div className="section-divider my-10" />
 
-            <p className="font-script text-[15px] leading-[1.9] text-gray-700">{INVITE.thanksText}</p>
+            <p className="font-script text-[15px] leading-[1.9] text-gray-700">{INVITE.thanksText.map((line) => (
+              <span key={line}>
+                {line}
+                <br />
+              </span>
+            ))}
+            </p>
 
             <div className="mt-12 font-script text-[18px] text-[var(--rose)]">
               {INVITE.groom.en} & {INVITE.bride.en}
@@ -563,6 +662,12 @@ export default function Page() {
           </div>
         </div>
       )}
+      <audio
+        ref={audioRef}
+        src="/bgm.mp3"
+        loop
+        playsInline
+      />
 
     </main>
   );
