@@ -412,6 +412,14 @@ img, video {
   height: 200svh;
 }
 
+.h-20 {
+  height: 5rem;
+}
+
+.h-\[360px\] {
+  height: 360px;
+}
+
 .min-h-\[680px\] {
   min-height: 680px;
 }
@@ -593,6 +601,10 @@ img, video {
 
 .border-white\/20 {
   border-color: #fff3;
+}
+
+.border-\[var\(--rose\)\] {
+  border-color: var(--rose);
 }
 
 .bg-\[\#CAA3A3\] {

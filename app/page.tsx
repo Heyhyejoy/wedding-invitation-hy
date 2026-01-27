@@ -139,6 +139,8 @@ END:VCALENDAR
 
     URL.revokeObjectURL(url);
   }
+  const galleryImages = ["wed5.jpg", "wed1.jpg", "wed3.jpg", "wed4.jpg"];
+  const [selectedImg, setSelectedImg] = useState(galleryImages[0]);
 
   const sharePayload = useMemo(() => {
     const title = `${INVITE.groom.ko} ♥ ${INVITE.bride.ko} | 모바일 청첩장`;
@@ -266,7 +268,7 @@ END:VCALENDAR
     w-full h-full
     object-cover
     object-center
-    opacity-40
+    opacity-30
     pointer-events-none
   "
               style={{
@@ -589,45 +591,62 @@ END:VCALENDAR
         </FadeInSection>
 
         <OrnamentUnderline />
+
         {/* GALLERY */}
         <FadeInSection>
           <section className="px-7 py-20">
             <div className="text-center">
-              <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">GALLERY</div>
-              <h2 className="mt-4 font-script text-[26px] tracking-wide">우리의 순간</h2>
+              <div className="font-script text-[12px] tracking-[0.35em] text-[var(--rose)]">
+                GALLERY
+              </div>
+              <h2 className="mt-4 font-script text-[26px] tracking-wide">
+                우리의 순간
+              </h2>
             </div>
 
-            <div className="mt-10 grid grid-cols-2 gap-3">
-              {["wed1.jpg", "wed5.jpg", "wed4.jpg", "wed3.jpg"].map((src) => (
-                <button
-                  key={src}
-                  className="rounded-2xl overflow-hidden border border-black/10 bg-white active:scale-[0.99]"
-                  onClick={() => setOpenImg(src)}
-                >
-                  <img src={src} alt="photo" className="w-full h-44 object-cover" />
-                </button>
-              ))}
-            </div>
-{/* 
-            <div className="mt-6 flex justify-center">
+            {/* 대표 사진 */}
+            <div className="mt-10">
               <button
-                className="rounded-xl border border-black/10 overflow-hidden active:scale-[0.99] transition"
-                onClick={() => setOpenVideo("vid1.mov")}
-                aria-label="open video"
+                className="w-full rounded-3xl overflow-hidden border border-black/10 bg-white active:scale-[0.99] transition"
+                onClick={() => setOpenImg(selectedImg)}
+                aria-label="open selected image"
               >
-                <video
-                  src="vid1.mov"
-                  className="w-32"
-                  muted
-                  loop
-                  playsInline
-                  autoPlay
+                <img
+                  src={selectedImg}
+                  alt="selected"
+                  className="w-full h-[360px] object-cover"
                 />
               </button>
+
+            
             </div>
-*/}
+
+            {/* 썸네일 */}
+            <div className="mt-8 grid grid-cols-4 gap-2">
+              {galleryImages.map((src) => {
+                const active = src === selectedImg;
+                return (
+                  <button
+                    key={src}
+                    className={`rounded-2xl overflow-hidden border bg-white active:scale-[0.99] transition
+              ${active ? "border-[var(--rose)]" : "border-black/10"}
+            `}
+                    onClick={() => setSelectedImg(src)}
+                    aria-label={`select ${src}`}
+                  >
+                    <img
+                      src={src}
+                      alt="thumb"
+                      className="w-full h-20 object-cover"
+                      style={{ opacity: active ? 1 : 0.75 }}
+                    />
+                  </button>
+                );
+              })}
+            </div>
           </section>
         </FadeInSection>
+
 
         <OrnamentUnderline />
 
